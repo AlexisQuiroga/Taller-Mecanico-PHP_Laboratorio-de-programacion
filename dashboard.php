@@ -1,6 +1,6 @@
 <?php
-require_once 'auth/check_session.php';
-require_once 'config/db.php';
+require_once 'check_session.php';
+require_once 'db.php';
 
 $rol = $_SESSION['rol'];
 $id_usuario = $_SESSION['id'];
@@ -23,8 +23,8 @@ function badge_estado($estado) {
     return "<span class=\"badge bg-{$clase}\">{$label}</span>";
 }
 ?>
-<?php include 'includes/header.php'; ?>
-<?php include 'includes/sidebar.php'; ?>
+<?php include 'header.php'; ?>
+<?php include 'sidebar.php'; ?>
 <div class="container-fluid p-4">
     <h4 class="fw-bold mb-4"><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard</h4>
 
@@ -247,4 +247,4 @@ function badge_estado($estado) {
     </div>
     <?php endif; ?>
 </div>
-<?php include 'includes/footer.php'; ?>
+<?php include 'footer.php'; ?>

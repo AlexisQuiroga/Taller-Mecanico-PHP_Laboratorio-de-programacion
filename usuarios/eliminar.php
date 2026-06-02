@@ -1,6 +1,6 @@
 <?php
-require_once '../auth/check_session.php';
-require_once '../config/db.php';
+require_once '../check_session.php';
+require_once '../db.php';
 
 if ($_SESSION['rol'] !== 'admin') {
     header('Location: ../dashboard.php');

@@ -4,7 +4,7 @@ if (isset($_SESSION['id'])) {
     header('Location: dashboard.php');
     exit();
 }
-require_once 'config/db.php';
+require_once 'db.php';
 
 $error = '';
 

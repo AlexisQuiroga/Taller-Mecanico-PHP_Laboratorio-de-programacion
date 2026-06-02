@@ -1,6 +1,6 @@
 <?php
-require_once '../auth/check_session.php';
-require_once '../config/db.php';
+require_once '../check_session.php';
+require_once '../db.php';
 
 if ($_SESSION['rol'] !== 'admin') {
     header('Location: ../dashboard.php');
@@ -9,8 +9,8 @@ if ($_SESSION['rol'] !== 'admin') {
 
 $usuarios = mysqli_query($conn, "SELECT * FROM usuarios ORDER BY created_at DESC");
 ?>
-<?php include '../includes/header.php'; ?>
-<?php include '../includes/sidebar.php'; ?>
+<?php include '../header.php'; ?>
+<?php include '../sidebar.php'; ?>
 <div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0"><i class="bi bi-people me-2 text-primary"></i>Usuarios</h4>
@@ -67,4 +67,4 @@ $usuarios = mysqli_query($conn, "SELECT * FROM usuarios ORDER BY created_at DESC
         </div>
     </div>
 </div>
-<?php include '../includes/footer.php'; ?>
+<?php include '../footer.php'; ?>

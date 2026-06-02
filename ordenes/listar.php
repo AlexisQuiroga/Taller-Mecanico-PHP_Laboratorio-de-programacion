@@ -1,6 +1,6 @@
 <?php
-require_once '../auth/check_session.php';
-require_once '../config/db.php';
+require_once '../check_session.php';
+require_once '../db.php';
 
 $rol = $_SESSION['rol'];
 $id_usuario = $_SESSION['id'];
@@ -67,8 +67,8 @@ if ($rol === 'admin') {
 
 $ordenes = mysqli_query($conn, $sql);
 ?>
-<?php include '../includes/header.php'; ?>
-<?php include '../includes/sidebar.php'; ?>
+<?php include '../header.php'; ?>
+<?php include '../sidebar.php'; ?>
 <div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0">
@@ -191,4 +191,4 @@ $ordenes = mysqli_query($conn, $sql);
         </div>
     </div>
 </div>
-<?php include '../includes/footer.php'; ?>
+<?php include '../footer.php'; ?>
