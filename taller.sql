@@ -41,8 +41,8 @@ CREATE TABLE ordenes_trabajo (
 INSERT INTO usuarios (nombre, apellido, email, password, rol) VALUES
 ('Admin', 'Sistema', 'admin@taller.com', MD5('admin123'), 'admin'),
 ('Roberto', 'Silva', 'roberto@taller.com', MD5('mec123'), 'mecanico'),
-('Diego', 'Torres', 'diego@taller.com', MD5('elec123'), 'electricista'),
-('Carlos', 'Gomez', 'carlos@cliente.com', MD5('cli123'), 'cliente'),
+('Rodirgo', 'Perez', 'rperez@taller.com', MD5('elec123'), 'electricista'),
+('Alexis', 'Quiroga', 'aquiroga@cliente.com', MD5('cli123'), 'cliente'),
 ('Maria', 'Lopez', 'maria@cliente.com', MD5('cli456'), 'cliente');
 
 INSERT INTO vehiculos (id_cliente, marca, modelo, anio, patente, color) VALUES
