@@ -1,38 +1,38 @@
 <?php
-require_once '../check_session.php';
-require_once '../db.php';
+require_once 'validaciones.php';
+require_once 'consultas.php';
+$conexion = conexion();
 
 $rol = $_SESSION['rol'];
 $id_usuario = $_SESSION['id'];
 
 if ($rol !== 'admin' && $rol !== 'cliente') {
-    header('Location: ../dashboard.php');
+    header('Location: dashboard.php');
     exit();
 }
 
-$clientes = mysqli_query($conn, "SELECT id, nombre, apellido FROM usuarios WHERE rol = 'cliente' ORDER BY nombre");
+$clientes = obtenerClientes($conexion);
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_cliente = $rol === 'admin' ? (int)$_POST['id_cliente'] : $id_usuario;
-    $marca = mysqli_real_escape_string($conn, trim($_POST['marca']));
-    $modelo = mysqli_real_escape_string($conn, trim($_POST['modelo']));
-    $anio = (int)$_POST['anio'];
-    $patente = mysqli_real_escape_string($conn, strtoupper(trim($_POST['patente'])));
-    $color = mysqli_real_escape_string($conn, trim($_POST['color']));
+    $marca   = trim($_POST['marca']);
+    $modelo  = trim($_POST['modelo']);
+    $anio    = (int)$_POST['anio'];
+    $patente = strtoupper(trim($_POST['patente']));
+    $color   = trim($_POST['color']);
 
     if (!$id_cliente || !$marca || !$modelo || !$anio || !$patente || !$color) {
         $error = 'Todos los campos son obligatorios.';
     } else {
-        $check = mysqli_query($conn, "SELECT id FROM vehiculos WHERE patente = '$patente'");
-        if (mysqli_num_rows($check) > 0) {
+        $verificar = verificarPatente($conexion, $patente);
+        if (mysqli_num_rows($verificar) > 0) {
             $error = 'La patente ya está registrada.';
         } else {
-            $sql = "INSERT INTO vehiculos (id_cliente, marca, modelo, anio, patente, color) VALUES ($id_cliente,'$marca','$modelo',$anio,'$patente','$color')";
-            if (mysqli_query($conn, $sql)) {
+            if (insertarVehiculo($conexion, $id_cliente, $marca, $modelo, $anio, $patente, $color)) {
                 $_SESSION['mensaje'] = 'Vehículo registrado correctamente.';
                 $_SESSION['tipo'] = 'success';
-                header('Location: listar.php');
+                header('Location: tablavehiculos.php');
                 exit();
             } else {
                 $error = 'Error al registrar el vehículo.';
@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<?php include '../header.php'; ?>
-<?php include '../sidebar.php'; ?>
+<?php include 'header.php'; ?>
+<?php include 'menulateral.php'; ?>
 <div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0"><i class="bi bi-car-front me-2 text-primary"></i>Nuevo Vehículo</h4>
@@ -100,11 +100,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-lg me-1"></i>Confirmar
                         </button>
-                        <a href="listar.php" class="btn btn-secondary">Cancelar</a>
+                        <a href="tablavehiculos.php" class="btn btn-secondary">Cancelar</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<?php include '../footer.php'; ?>
+<?php include 'footer.php'; ?>

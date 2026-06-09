@@ -4,24 +4,23 @@ if (isset($_SESSION['id'])) {
     header('Location: dashboard.php');
     exit();
 }
-require_once 'db.php';
+require_once 'consultas.php';
+$conexion = conexion();
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = mysqli_real_escape_string($conn, trim($_POST['email']));
-    $password = md5($_POST['password']);
-
-    $sql = "SELECT * FROM usuarios WHERE email = '$email' AND password = '$password' LIMIT 1";
-    $resultado = mysqli_query($conn, $sql);
+    $email     = trim($_POST['email']);
+    $contrasena = md5($_POST['password']);
+    $resultado  = login($conexion, $email, $contrasena);
 
     if ($resultado && mysqli_num_rows($resultado) === 1) {
         $usuario = mysqli_fetch_assoc($resultado);
-        $_SESSION['id'] = $usuario['id'];
-        $_SESSION['nombre'] = $usuario['nombre'];
+        $_SESSION['id']       = $usuario['id'];
+        $_SESSION['nombre']   = $usuario['nombre'];
         $_SESSION['apellido'] = $usuario['apellido'];
-        $_SESSION['email'] = $usuario['email'];
-        $_SESSION['rol'] = $usuario['rol'];
+        $_SESSION['email']    = $usuario['email'];
+        $_SESSION['rol']      = $usuario['rol'];
         header('Location: dashboard.php');
         exit();
     } else {
@@ -35,11 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TallerMec - Iniciar Sesión</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        body { background-color: #f0f2f5; }
-    </style>
+    <style>body { background-color: #f0f2f5; }</style>
 </head>
 <body>
 <div class="min-vh-100 d-flex align-items-center justify-content-center">
@@ -77,10 +75,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
                     </button>
                 </form>
+                <div class="text-center mt-3">
+                    <a href="registro.php" class="text-muted small">¿No tenés cuenta? Registrate</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= BASE_URL ?>/js/bootstrap.min.js"></script>
+<script src="<?= BASE_URL ?>/js/main.js"></script>
 </body>
 </html>

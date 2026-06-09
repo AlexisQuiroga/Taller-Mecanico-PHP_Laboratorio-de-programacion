@@ -1,6 +1,7 @@
 <?php
-require_once '../check_session.php';
-require_once '../db.php';
+require_once 'validaciones.php';
+require_once 'consultas.php';
+$conexion = conexion();
 
 $rol = $_SESSION['rol'];
 $id_usuario = $_SESSION['id'];
@@ -9,12 +10,12 @@ $id = (int)$_GET['id'];
 $cancelar = isset($_GET['cancelar']) && $_GET['cancelar'] == 1;
 
 if ($rol === 'admin') {
-    $orden = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM ordenes_trabajo WHERE id = $id"));
+    $orden = obtenerOrden($conexion, $id);
     if (!$orden) {
-        header('Location: listar.php');
+        header('Location: tablaordenes.php');
         exit();
     }
-    if (mysqli_query($conn, "DELETE FROM ordenes_trabajo WHERE id = $id")) {
+    if (eliminarOrden($conexion, $id)) {
         $_SESSION['mensaje'] = 'Orden eliminada correctamente.';
         $_SESSION['tipo'] = 'success';
     } else {
@@ -22,12 +23,12 @@ if ($rol === 'admin') {
         $_SESSION['tipo'] = 'danger';
     }
 } elseif ($rol === 'cliente' && $cancelar) {
-    $orden = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM ordenes_trabajo WHERE id = $id AND id_cliente = $id_usuario AND estado = 'pendiente'"));
+    $orden = obtenerOrdenPendienteCliente($conexion, $id, $id_usuario);
     if (!$orden) {
         $_SESSION['mensaje'] = 'No se puede cancelar esta orden.';
         $_SESSION['tipo'] = 'danger';
     } else {
-        if (mysqli_query($conn, "UPDATE ordenes_trabajo SET estado = 'cancelado' WHERE id = $id")) {
+        if (cancelarOrden($conexion, $id)) {
             $_SESSION['mensaje'] = 'Orden cancelada correctamente.';
             $_SESSION['tipo'] = 'success';
         } else {
@@ -36,9 +37,9 @@ if ($rol === 'admin') {
         }
     }
 } else {
-    header('Location: ../dashboard.php');
+    header('Location: dashboard.php');
     exit();
 }
 
-header('Location: listar.php');
+header('Location: tablaordenes.php');
 exit();

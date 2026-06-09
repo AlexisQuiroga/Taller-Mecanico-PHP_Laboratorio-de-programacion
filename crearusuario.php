@@ -1,33 +1,33 @@
 <?php
-require_once '../check_session.php';
-require_once '../db.php';
+require_once 'validaciones.php';
+require_once 'consultas.php';
+$conexion = conexion();
 
 if ($_SESSION['rol'] !== 'admin') {
-    header('Location: ../dashboard.php');
+    header('Location: dashboard.php');
     exit();
 }
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = mysqli_real_escape_string($conn, trim($_POST['nombre']));
-    $apellido = mysqli_real_escape_string($conn, trim($_POST['apellido']));
-    $email = mysqli_real_escape_string($conn, trim($_POST['email']));
+    $nombre   = trim($_POST['nombre']);
+    $apellido = trim($_POST['apellido']);
+    $email    = trim($_POST['email']);
     $password = md5($_POST['password']);
-    $rol = mysqli_real_escape_string($conn, $_POST['rol']);
+    $rol      = $_POST['rol'];
 
     if (!$nombre || !$apellido || !$email || !$_POST['password'] || !$rol) {
         $error = 'Todos los campos son obligatorios.';
     } else {
-        $check = mysqli_query($conn, "SELECT id FROM usuarios WHERE email = '$email'");
-        if (mysqli_num_rows($check) > 0) {
+        $verificar = verificarEmail($conexion, $email);
+        if (mysqli_num_rows($verificar) > 0) {
             $error = 'El email ya está registrado.';
         } else {
-            $sql = "INSERT INTO usuarios (nombre, apellido, email, password, rol) VALUES ('$nombre','$apellido','$email','$password','$rol')";
-            if (mysqli_query($conn, $sql)) {
+            if (insertarUsuario($conexion, $nombre, $apellido, $email, $password, $rol)) {
                 $_SESSION['mensaje'] = 'Usuario creado correctamente.';
                 $_SESSION['tipo'] = 'success';
-                header('Location: listar.php');
+                header('Location: tablausuarios.php');
                 exit();
             } else {
                 $error = 'Error al crear el usuario.';
@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<?php include '../header.php'; ?>
-<?php include '../sidebar.php'; ?>
+<?php include 'header.php'; ?>
+<?php include 'menulateral.php'; ?>
 <div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0"><i class="bi bi-person-plus me-2 text-primary"></i>Nuevo Usuario</h4>
@@ -82,11 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-lg me-1"></i>Confirmar
                         </button>
-                        <a href="listar.php" class="btn btn-secondary">Cancelar</a>
+                        <a href="tablausuarios.php" class="btn btn-secondary">Cancelar</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<?php include '../footer.php'; ?>
+<?php include 'footer.php'; ?>

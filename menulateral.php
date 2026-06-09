@@ -31,46 +31,46 @@
         </li>
         <?php if ($rol === 'admin'): ?>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/usuarios/listar.php" class="nav-link">
+            <a href="<?= BASE_URL ?>/tablausuarios.php" class="nav-link">
                 <i class="bi bi-people me-2"></i>Usuarios
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/vehiculos/listar.php" class="nav-link">
+            <a href="<?= BASE_URL ?>/tablavehiculos.php" class="nav-link">
                 <i class="bi bi-car-front me-2"></i>Vehículos
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/ordenes/listar.php" class="nav-link">
+            <a href="<?= BASE_URL ?>/tablaordenes.php" class="nav-link">
                 <i class="bi bi-clipboard-check me-2"></i>Órdenes de Trabajo
             </a>
         </li>
         <?php elseif ($rol === 'mecanico' || $rol === 'electricista'): ?>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/ordenes/listar.php" class="nav-link">
+            <a href="<?= BASE_URL ?>/tablaordenes.php" class="nav-link">
                 <i class="bi bi-clipboard-check me-2"></i>Mis Órdenes
             </a>
         </li>
         <?php elseif ($rol === 'cliente'): ?>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/vehiculos/listar.php" class="nav-link">
+            <a href="<?= BASE_URL ?>/tablavehiculos.php" class="nav-link">
                 <i class="bi bi-car-front me-2"></i>Mis Vehículos
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/ordenes/listar.php" class="nav-link">
+            <a href="<?= BASE_URL ?>/tablaordenes.php" class="nav-link">
                 <i class="bi bi-clipboard-check me-2"></i>Mis Órdenes
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/ordenes/crear.php" class="nav-link">
+            <a href="<?= BASE_URL ?>/crearorden.php" class="nav-link">
                 <i class="bi bi-plus-circle me-2"></i>Solicitar Orden
             </a>
         </li>
         <?php endif; ?>
     </ul>
     <div class="p-3">
-        <a href="<?= BASE_URL ?>/logout.php" class="btn btn-outline-light w-100">
+        <a href="<?= BASE_URL ?>/cerrarsesion.php" class="btn btn-outline-light w-100">
             <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
         </a>
     </div>

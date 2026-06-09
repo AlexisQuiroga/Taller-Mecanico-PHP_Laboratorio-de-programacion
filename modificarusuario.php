@@ -1,45 +1,41 @@
 <?php
-require_once '../check_session.php';
-require_once '../db.php';
+require_once 'validaciones.php';
+require_once 'consultas.php';
+$conexion = conexion();
 
 if ($_SESSION['rol'] !== 'admin') {
-    header('Location: ../dashboard.php');
+    header('Location: dashboard.php');
     exit();
 }
 
 $id = (int)$_GET['id'];
-$usuario = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM usuarios WHERE id = $id"));
+$usuario = obtenerUsuario($conexion, $id);
 
 if (!$usuario) {
-    header('Location: listar.php');
+    header('Location: tablausuarios.php');
     exit();
 }
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = mysqli_real_escape_string($conn, trim($_POST['nombre']));
-    $apellido = mysqli_real_escape_string($conn, trim($_POST['apellido']));
-    $email = mysqli_real_escape_string($conn, trim($_POST['email']));
-    $rol = mysqli_real_escape_string($conn, $_POST['rol']);
+    $nombre   = trim($_POST['nombre']);
+    $apellido = trim($_POST['apellido']);
+    $email    = trim($_POST['email']);
+    $rol      = $_POST['rol'];
 
     if (!$nombre || !$apellido || !$email || !$rol) {
         $error = 'Nombre, apellido, email y rol son obligatorios.';
     } else {
-        $check = mysqli_query($conn, "SELECT id FROM usuarios WHERE email = '$email' AND id != $id");
-        if (mysqli_num_rows($check) > 0) {
+        $verificar = verificarEmail($conexion, $email, $id);
+        if (mysqli_num_rows($verificar) > 0) {
             $error = 'El email ya está en uso por otro usuario.';
         } else {
-            $pass_sql = '';
-            if (!empty($_POST['password'])) {
-                $nueva = md5($_POST['password']);
-                $pass_sql = ", password = '$nueva'";
-            }
-            $sql = "UPDATE usuarios SET nombre='$nombre', apellido='$apellido', email='$email', rol='$rol' $pass_sql WHERE id = $id";
-            if (mysqli_query($conn, $sql)) {
+            $nueva_contrasena = !empty($_POST['password']) ? md5($_POST['password']) : '';
+            if (actualizarUsuario($conexion, $id, $nombre, $apellido, $email, $rol, $nueva_contrasena)) {
                 $_SESSION['mensaje'] = 'Usuario actualizado correctamente.';
                 $_SESSION['tipo'] = 'success';
-                header('Location: listar.php');
+                header('Location: tablausuarios.php');
                 exit();
             } else {
                 $error = 'Error al actualizar el usuario.';
@@ -48,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<?php include '../header.php'; ?>
-<?php include '../sidebar.php'; ?>
+<?php include 'header.php'; ?>
+<?php include 'menulateral.php'; ?>
 <div class="container-fluid p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0"><i class="bi bi-pencil me-2 text-primary"></i>Editar Usuario</h4>
@@ -99,11 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-lg me-1"></i>Confirmar
                         </button>
-                        <a href="listar.php" class="btn btn-secondary">Cancelar</a>
+                        <a href="tablausuarios.php" class="btn btn-secondary">Cancelar</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<?php include '../footer.php'; ?>
+<?php include 'footer.php'; ?>
