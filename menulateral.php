@@ -1,14 +1,14 @@
-<div id="overlay"></div>
+﻿<div id="overlay"></div>
 <nav id="sidebar" class="d-flex flex-column">
     <div class="sidebar-header">
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-wrench-adjustable-circle-fill fs-4 text-warning"></i>
-            <span class="fs-5 fw-bold text-white">TallerMec</span>
+            <span class="fs-5 fw-bold text-white">Taller Mecánico</span>
         </div>
     </div>
     <div class="user-info">
         <div class="text-white-50 small">Bienvenido,</div>
-        <div class="text-white fw-semibold"><?php echo htmlspecialchars($_SESSION['nombre'] . ' ' . $_SESSION['apellido']); ?></div>
+        <div class="text-white fw-semibold"><?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></div>
         <div class="mt-1">
             <?php
             $rol = $_SESSION['rol'];
@@ -18,7 +18,11 @@
                 'electricista' => 'bg-warning text-dark',
                 'cliente' => 'bg-success'
             ];
-            $badge = $badge_class[$rol] ?? 'bg-secondary';
+            if (isset($badge_class[$rol])) {
+                $badge = $badge_class[$rol];
+            } else {
+                $badge = 'bg-secondary';
+            }
             ?>
             <span class="badge <?php echo $badge; ?>"><?php echo ucfirst($rol); ?></span>
         </div>
@@ -29,7 +33,7 @@
                 <i class="bi bi-speedometer2 me-2"></i>Dashboard
             </a>
         </li>
-        <?php if ($rol === 'admin'): ?>
+        <?php if ($rol === 'admin'){ ?>
         <li class="nav-item">
             <a href="<?= BASE_URL ?>/tablausuarios.php" class="nav-link">
                 <i class="bi bi-people me-2"></i>Usuarios
@@ -45,13 +49,13 @@
                 <i class="bi bi-clipboard-check me-2"></i>Órdenes de Trabajo
             </a>
         </li>
-        <?php elseif ($rol === 'mecanico' || $rol === 'electricista'): ?>
+        <?php } elseif ($rol === 'mecanico' || $rol === 'electricista'){ ?>
         <li class="nav-item">
             <a href="<?= BASE_URL ?>/tablaordenes.php" class="nav-link">
                 <i class="bi bi-clipboard-check me-2"></i>Mis Órdenes
             </a>
         </li>
-        <?php elseif ($rol === 'cliente'): ?>
+        <?php } elseif ($rol === 'cliente'){ ?>
         <li class="nav-item">
             <a href="<?= BASE_URL ?>/tablavehiculos.php" class="nav-link">
                 <i class="bi bi-car-front me-2"></i>Mis Vehículos
@@ -67,7 +71,7 @@
                 <i class="bi bi-plus-circle me-2"></i>Solicitar Orden
             </a>
         </li>
-        <?php endif; ?>
+        <?php }; ?>
     </ul>
     <div class="p-3">
         <a href="<?= BASE_URL ?>/cerrarsesion.php" class="btn btn-outline-light w-100">
@@ -80,5 +84,5 @@
     <button class="btn btn-outline-secondary" id="sidebarToggle">
         <i class="bi bi-list"></i>
     </button>
-    <span class="fw-bold text-primary">TallerMec</span>
+    <span class="fw-bold text-primary">Taller Mecánico</span>
 </nav>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'validaciones.php';
 require_once 'consultas.php';
 $conexion   = conexion();
@@ -10,14 +10,14 @@ $id_usuario = $_SESSION['id'];
 <div class="container-fluid p-4">
     <h4 class="fw-bold mb-4"><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard</h4>
 
-    <?php if (isset($_SESSION['mensaje'])): ?>
+    <?php if (isset($_SESSION['mensaje'])){ ?>
     <div class="alert alert-<?php echo $_SESSION['tipo']; ?> alert-dismissible fade show">
-        <?php echo htmlspecialchars($_SESSION['mensaje']); unset($_SESSION['mensaje'], $_SESSION['tipo']); ?>
+        <?php echo $_SESSION['mensaje']; unset($_SESSION['mensaje'], $_SESSION['tipo']); ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-    <?php endif; ?>
+    <?php }; ?>
 
-    <?php if ($rol === 'admin'): ?>
+    <?php if ($rol === 'admin'){ ?>
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm text-center h-100">
@@ -65,22 +65,22 @@ $id_usuario = $_SESSION['id'];
                         <tr><th>Cliente</th><th>Vehículo</th><th>Tipo</th><th>Estado</th><th>Fecha estimada</th></tr>
                     </thead>
                     <tbody>
-                    <?php $res = proximasOrdenesActivas($conexion); while ($row = mysqli_fetch_assoc($res)): ?>
+                    <?php $res = proximasOrdenesActivas($conexion); while ($row = mysqli_fetch_array($res)) { ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($row['cliente']); ?></td>
-                        <td><?php echo htmlspecialchars($row['vehiculo']); ?></td>
+                        <td><?php echo $row['cliente']; ?></td>
+                        <td><?php echo $row['vehiculo']; ?></td>
                         <td><span class="badge bg-<?php echo $row['tipo']==='mecanica'?'info text-dark':'secondary'; ?>"><?php echo ucfirst($row['tipo']); ?></span></td>
                         <td><?php echo badge_estado($row['estado']); ?></td>
-                        <td><?php echo htmlspecialchars($row['fecha_estimada']); ?></td>
+                        <td><?php echo $row['fecha_estimada']; ?></td>
                     </tr>
-                    <?php endwhile; ?>
+                    <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <?php elseif ($rol === 'mecanico' || $rol === 'electricista'): ?>
+    <?php } elseif ($rol === 'mecanico' || $rol === 'electricista'){ ?>
     <?php $tipo = $rol === 'mecanico' ? 'mecanica' : 'electricidad'; ?>
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-4">
@@ -120,21 +120,21 @@ $id_usuario = $_SESSION['id'];
                         <tr><th>Cliente</th><th>Vehículo</th><th>Estado</th><th>Fecha estimada</th></tr>
                     </thead>
                     <tbody>
-                    <?php $res = ultimasOrdenesTrabajador($conexion, $id_usuario, $tipo); while ($row = mysqli_fetch_assoc($res)): ?>
+                    <?php $res = ultimasOrdenesTrabajador($conexion, $id_usuario, $tipo); while ($row = mysqli_fetch_array($res)) { ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($row['cliente']); ?></td>
-                        <td><?php echo htmlspecialchars($row['vehiculo']); ?></td>
+                        <td><?php echo $row['cliente']; ?></td>
+                        <td><?php echo $row['vehiculo']; ?></td>
                         <td><?php echo badge_estado($row['estado']); ?></td>
-                        <td><?php echo htmlspecialchars($row['fecha_estimada']); ?></td>
+                        <td><?php echo $row['fecha_estimada']; ?></td>
                     </tr>
-                    <?php endwhile; ?>
+                    <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <?php elseif ($rol === 'cliente'): ?>
+    <?php } elseif ($rol === 'cliente'){ ?>
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-6">
             <div class="card border-0 shadow-sm text-center h-100">
@@ -164,20 +164,20 @@ $id_usuario = $_SESSION['id'];
                         <tr><th>Vehículo</th><th>Tipo</th><th>Estado</th><th>Fecha ingreso</th><th>Fecha estimada</th></tr>
                     </thead>
                     <tbody>
-                    <?php $res = todasOrdenesCliente($conexion, $id_usuario); while ($row = mysqli_fetch_assoc($res)): ?>
+                    <?php $res = todasOrdenesCliente($conexion, $id_usuario); while ($row = mysqli_fetch_array($res)) { ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($row['vehiculo']); ?></td>
+                        <td><?php echo $row['vehiculo']; ?></td>
                         <td><span class="badge bg-<?php echo $row['tipo']==='mecanica'?'info text-dark':'secondary'; ?>"><?php echo ucfirst($row['tipo']); ?></span></td>
                         <td><?php echo badge_estado($row['estado']); ?></td>
-                        <td><?php echo htmlspecialchars($row['fecha_ingreso']); ?></td>
-                        <td><?php echo htmlspecialchars($row['fecha_estimada']); ?></td>
+                        <td><?php echo $row['fecha_ingreso']; ?></td>
+                        <td><?php echo $row['fecha_estimada']; ?></td>
                     </tr>
-                    <?php endwhile; ?>
+                    <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <?php endif; ?>
+    <?php }; ?>
 </div>
 <?php include 'footer.php'; ?>

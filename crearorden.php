@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'validaciones.php';
 require_once 'consultas.php';
 $conexion = conexion();
@@ -21,7 +21,7 @@ if ($rol === 'admin') {
     $mis_vehiculos = obtenerVehiculosDelCliente($conexion, $id_usuario);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (!empty($_POST['aceptar'])) {
     if ($rol === 'admin') {
         $id_cliente    = (int)$_POST['id_cliente'];
         $id_vehiculo   = (int)$_POST['id_vehiculo'];
@@ -65,26 +65,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0"><i class="bi bi-plus-circle me-2 text-primary"></i>Nueva Orden de Trabajo</h4>
     </div>
-    <?php if ($error): ?>
+    <?php if ($error) { ?>
     <div class="alert alert-danger alert-dismissible fade show">
-        <?php echo htmlspecialchars($error); ?>
+        <?php echo $error; ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-    <?php endif; ?>
+    <?php }; ?>
     <div class="card border-0 shadow-sm" style="max-width:700px;">
         <div class="card-body">
             <form method="POST" action="">
                 <div class="row g-3">
-                    <?php if ($rol === 'admin'): ?>
+                    <?php if ($rol === 'admin') { ?>
                     <div class="col-md-6">
                         <label class="form-label">Cliente</label>
                         <select name="id_cliente" class="form-select" required id="sel_cliente">
                             <option value="">Seleccionar cliente...</option>
-                            <?php while ($c = mysqli_fetch_assoc($clientes)): ?>
+                            <?php while ($c = mysqli_fetch_array($clientes)) { ?>
                             <option value="<?php echo $c['id']; ?>" <?php echo (isset($_POST['id_cliente']) && $_POST['id_cliente']==$c['id'])?'selected':''; ?>>
-                                <?php echo htmlspecialchars($c['nombre'] . ' ' . $c['apellido']); ?>
+                                <?php echo $c['nombre'] . ' ' . $c['apellido']; ?>
                             </option>
-                            <?php endwhile; ?>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -116,16 +116,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="cancelado" <?php echo (isset($_POST['estado'])&&$_POST['estado']==='cancelado')?'selected':''; ?>>Cancelado</option>
                         </select>
                     </div>
-                    <?php else: ?>
+                    <?php } else { ?>
                     <div class="col-12">
                         <label class="form-label">Mi vehículo</label>
                         <select name="id_vehiculo" class="form-select" required>
                             <option value="">Seleccionar vehículo...</option>
-                            <?php while ($v = mysqli_fetch_assoc($mis_vehiculos)): ?>
+                            <?php while ($v = mysqli_fetch_array($mis_vehiculos)) { ?>
                             <option value="<?php echo $v['id']; ?>" <?php echo (isset($_POST['id_vehiculo'])&&$_POST['id_vehiculo']==$v['id'])?'selected':''; ?>>
-                                <?php echo htmlspecialchars($v['marca'] . ' ' . $v['modelo'] . ' (' . $v['patente'] . ')'); ?>
+                                <?php echo $v['marca'] . ' ' . $v['modelo'] . ' (' . $v['patente'] . ')'; ?>
                             </option>
-                            <?php endwhile; ?>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="col-12">
@@ -136,23 +136,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="electricidad" <?php echo (isset($_POST['tipo'])&&$_POST['tipo']==='electricidad')?'selected':''; ?>>Electricidad</option>
                         </select>
                     </div>
-                    <?php endif; ?>
+                    <?php }; ?>
                     <div class="col-12">
                         <label class="form-label">Descripción</label>
-                        <textarea name="descripcion" class="form-control" rows="3" required><?php echo isset($_POST['descripcion']) ? htmlspecialchars($_POST['descripcion']) : ''; ?></textarea>
+                        <textarea name="descripcion" class="form-control" rows="3" required><?php echo isset($_POST['descripcion']) ? $_POST['descripcion'] : ''; ?></textarea>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Fecha de ingreso</label>
                         <input type="date" name="fecha_ingreso" class="form-control" required
-                            value="<?php echo isset($_POST['fecha_ingreso']) ? htmlspecialchars($_POST['fecha_ingreso']) : date('Y-m-d'); ?>">
+                            value="<?php echo isset($_POST['fecha_ingreso']) ? $_POST['fecha_ingreso'] : date('Y-m-d'); ?>">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Fecha estimada</label>
                         <input type="date" name="fecha_estimada" class="form-control" required
-                            value="<?php echo isset($_POST['fecha_estimada']) ? htmlspecialchars($_POST['fecha_estimada']) : ''; ?>">
+                            value="<?php echo isset($_POST['fecha_estimada']) ? $_POST['fecha_estimada'] : ''; ?>">
                     </div>
                     <div class="col-12 d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" name="aceptar" value="1" class="btn btn-primary">
                             <i class="bi bi-check-lg me-1"></i>Confirmar
                         </button>
                         <a href="tablaordenes.php" class="btn btn-secondary">Cancelar</a>
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
-<?php if ($rol === 'admin'): ?>
+<?php if ($rol === 'admin') { ?>
 <script>
 const mecanicos = <?= json_encode($mecanicos) ?>;
 const electricistas = <?= json_encode($electricistas) ?>;
@@ -195,5 +195,5 @@ document.getElementById('sel_tipo').addEventListener('change', function() {
     });
 });
 </script>
-<?php endif; ?>
+<?php }; ?>
 <?php include 'footer.php'; ?>

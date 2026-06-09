@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'validaciones.php';
 require_once 'consultas.php';
 $conexion = conexion();
@@ -84,7 +84,7 @@ if (!empty($_POST['modificar'])) {
     </div>
     <?php if ($error){ ?>
     <div class="alert alert-danger alert-dismissible fade show">
-        <?php echo $error; ?>
+        <?php echo ($error); ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     <?php }; ?>
@@ -92,13 +92,13 @@ if (!empty($_POST['modificar'])) {
         <div class="card-body">
             <form method="POST" action="">
                 <div class="row g-3">
-                    <?php if ($rol === 'admin'){ ?>
+                    <?php if ($rol === 'admin'): ?>
                     <div class="col-md-6">
                         <label class="form-label">Cliente</label>
                         <select name="id_cliente" class="form-select" required id="sel_cliente">
                             <?php while ($c = mysqli_fetch_array($clientes)) { ?>
                             <option value="<?php echo $c['id']; ?>" <?php echo $datos['id_cliente']==$c['id']?'selected':''; ?>>
-                                <?php echo $c['nombre'] . ' ' . $c['apellido']; ?>
+                                <?php echo ($c['nombre'] . ' ' . $c['apellido']); ?>
                             </option>
                             <?php } ?>
                         </select>
@@ -108,7 +108,7 @@ if (!empty($_POST['modificar'])) {
                         <select name="id_vehiculo" class="form-select" required id="sel_vehiculo">
                             <?php foreach ($vehiculos_cliente as $v) { ?>
                             <option value="<?php echo $v['id']; ?>" <?php echo $datos['id_vehiculo']==$v['id']?'selected':''; ?>>
-                                <?php echo $v['marca'].' '.$v['modelo'].' ('.$v['patente'].')'; ?>
+                                <?php echo ($v['marca'].' '.$v['modelo'].' ('.$v['patente'].')'); ?>
                             </option>
                             <?php } ?>
                         </select>
@@ -126,14 +126,14 @@ if (!empty($_POST['modificar'])) {
                             <?php while ($t = mysqli_fetch_array($trabajadores)) { ?>
                             <option value="<?php echo $t['id']; ?>" data-rol="<?php echo $t['rol']; ?>"
                                 <?php echo $datos['id_trabajador']==$t['id']?'selected':''; ?>>
-                                <?php echo $t['nombre'].' '.$t['apellido'].' ('.ucfirst($t['rol']).')'; ?>
+                                <?php echo  ($t['nombre'].' '.$t['apellido'].' ('.ucfirst($t['rol']).')'); ?>
                             </option>
                             <?php } ?>
                         </select>
                     </div>
                     <div class="col-12">
                         <label class="form-label">Descripción</label>
-                        <textarea name="descripcion" class="form-control" rows="3" required><?php echo $datos['descripcion']; ?></textarea>
+                        <textarea name="descripcion" class="form-control" rows="3" required><?php echo  ($datos['descripcion']); ?></textarea>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Estado</label>
@@ -146,19 +146,19 @@ if (!empty($_POST['modificar'])) {
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Fecha ingreso</label>
-                        <input type="date" name="fecha_ingreso" class="form-control" required value="<?php echo $datos['fecha_ingreso']; ?>">
+                        <input type="date" name="fecha_ingreso" class="form-control" required value="<?php echo  ($datos['fecha_ingreso']); ?>">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Fecha estimada</label>
-                        <input type="date" name="fecha_estimada" class="form-control" required value="<?php echo $datos['fecha_estimada']; ?>">
+                        <input type="date" name="fecha_estimada" class="form-control" required value="<?php echo  ($datos['fecha_estimada']); ?>">
                     </div>
-                    <?php } else { ?>
+                    <?php else: ?>
                     <div class="col-12">
                         <div class="alert alert-info mb-0">
                             <strong>Vehículo:</strong>
                             <?php
                             $v_info = obtenerInfoVehiculo($conexion, $orden['id_vehiculo']);
-                            echo $v_info['marca'].' '.$v_info['modelo'].' ('.$v_info['patente'].')';
+                            echo  ($v_info['marca'].' '.$v_info['modelo'].' ('.$v_info['patente'].')');
                             ?>
                             &nbsp;|&nbsp;
                             <strong>Tipo:</strong> <?php echo ucfirst($orden['tipo']); ?>
@@ -166,7 +166,7 @@ if (!empty($_POST['modificar'])) {
                     </div>
                     <div class="col-12">
                         <label class="form-label">Descripción</label>
-                        <p class="form-control-plaintext border rounded p-2 bg-light"><?php echo $orden['descripcion']; ?></p>
+                        <p class="form-control-plaintext border rounded p-2 bg-light"><?php echo  ($orden['descripcion']); ?></p>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Cambiar estado</label>
@@ -189,7 +189,7 @@ if (!empty($_POST['modificar'])) {
         </div>
     </div>
 </div>
-<?php if ($rol === 'admin'){ ?>
+<?php if ($rol === 'admin'): ?>
 <script>
 document.getElementById('sel_cliente').addEventListener('change', function() {
     const idCliente = this.value;

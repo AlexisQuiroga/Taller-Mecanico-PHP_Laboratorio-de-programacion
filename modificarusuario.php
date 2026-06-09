@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'validaciones.php';
 require_once 'consultas.php';
 $conexion = conexion();
@@ -18,7 +18,7 @@ if (!$usuario) {
 
 $error = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (!empty($_POST['modificar'])) {
     $nombre   = trim($_POST['nombre']);
     $apellido = trim($_POST['apellido']);
     $email    = trim($_POST['email']);
@@ -50,12 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold mb-0"><i class="bi bi-pencil me-2 text-primary"></i>Editar Usuario</h4>
     </div>
-    <?php if ($error): ?>
+    <?php if ($error){ ?>
     <div class="alert alert-danger alert-dismissible fade show">
-        <?php echo htmlspecialchars($error); ?>
+        <?php echo $error; ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-    <?php endif; ?>
+    <?php }; ?>
     <div class="card border-0 shadow-sm" style="max-width:600px;">
         <div class="card-body">
             <form method="POST" action="">
@@ -63,17 +63,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-md-6">
                         <label class="form-label">Nombre</label>
                         <input type="text" name="nombre" class="form-control" required
-                            value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' ? $_POST['nombre'] : $usuario['nombre']); ?>">
+                            value="<?php echo isset($_POST['nombre']) ? $_POST['nombre'] : $usuario['nombre']; ?>">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Apellido</label>
                         <input type="text" name="apellido" class="form-control" required
-                            value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' ? $_POST['apellido'] : $usuario['apellido']); ?>">
+                            value="<?php echo isset($_POST['apellido']) ? $_POST['apellido'] : $usuario['apellido']; ?>">
                     </div>
                     <div class="col-12">
                         <label class="form-label">Email</label>
                         <input type="email" name="email" class="form-control" required
-                            value="<?php echo htmlspecialchars($_SERVER['REQUEST_METHOD']==='POST' ? $_POST['email'] : $usuario['email']); ?>">
+                            value="<?php echo isset($_POST['email']) ? $_POST['email'] : $usuario['email']; ?>">
                     </div>
                     <div class="col-12">
                         <label class="form-label">Nueva contraseña <small class="text-muted">(dejar vacío para no cambiar)</small></label>
@@ -84,15 +84,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select name="rol" class="form-select" required>
                             <?php
                             $roles = ['admin','mecanico','electricista','cliente'];
-                            $rol_actual = $_SERVER['REQUEST_METHOD']==='POST' ? $_POST['rol'] : $usuario['rol'];
-                            foreach ($roles as $r):
+                            if (isset($_POST['rol'])) {
+                                $rol_actual = $_POST['rol'];
+                            } else {
+                                $rol_actual = $usuario['rol'];
+                            }
+                            foreach ($roles as $r) {
                             ?>
                             <option value="<?php echo $r; ?>" <?php echo $rol_actual === $r ? 'selected' : ''; ?>><?php echo ucfirst($r); ?></option>
-                            <?php endforeach; ?>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="col-12 d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" name="modificar" value="1" class="btn btn-primary">
                             <i class="bi bi-check-lg me-1"></i>Confirmar
                         </button>
                         <a href="tablausuarios.php" class="btn btn-secondary">Cancelar</a>

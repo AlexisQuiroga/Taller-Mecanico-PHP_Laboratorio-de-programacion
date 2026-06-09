@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'validaciones.php';
 require_once 'consultas.php';
 $conexion = conexion();
@@ -29,7 +29,7 @@ $ordenes = mostrarOrdenes($conexion, $rol, $id_usuario, $filtro_estado);
     </div>
     <?php if (isset($_SESSION['mensaje'])){ ?>
     <div class="alert alert-<?php echo $_SESSION['tipo']; ?> alert-dismissible fade show">
-        <?php echo $_SESSION['mensaje']; unset($_SESSION['mensaje'], $_SESSION['tipo']); ?>
+        <?php echo  ($_SESSION['mensaje']); unset($_SESSION['mensaje'], $_SESSION['tipo']); ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     <?php }; ?>
@@ -66,14 +66,14 @@ $ordenes = mostrarOrdenes($conexion, $rol, $id_usuario, $filtro_estado);
                             <th>F. Ingreso</th>
                             <th>F. Estimada</th>
                             <th>Acciones</th>
-                            <?php } elseif ($rol === 'mecanico' || $rol === 'electricista'){ ?>
+                            <?php elseif ($rol === 'mecanico' || $rol === 'electricista'): ?>
                             <th>Cliente</th>
                             <th>Vehículo</th>
                             <th>Descripción</th>
                             <th>Estado</th>
                             <th>F. Estimada</th>
                             <th>Acción</th>
-                            <?php } else { ?>
+                            <?php else: ?>
                             <th>Vehículo</th>
                             <th>Tipo</th>
                             <th>Trabajador</th>
@@ -86,14 +86,14 @@ $ordenes = mostrarOrdenes($conexion, $rol, $id_usuario, $filtro_estado);
                     <tbody>
                     <?php while ($o = mysqli_fetch_array($ordenes)) { ?>
                     <tr>
-                        <?php if ($rol === 'admin'){ ?>
-                        <td><?php echo $o['cliente']; ?></td>
-                        <td><?php echo $o['vehiculo']; ?></td>
-                        <td><?php echo $o['trabajador']; ?></td>
+                        <?php if ($rol === 'admin'): ?>
+                        <td><?php echo  ($o['cliente']); ?></td>
+                        <td><?php echo  ($o['vehiculo']); ?></td>
+                        <td><?php echo  ($o['trabajador']); ?></td>
                         <td><span class="badge bg-<?php echo $o['tipo']==='mecanica'?'info text-dark':'secondary'; ?>"><?php echo ucfirst($o['tipo']); ?></span></td>
                         <td><?php echo badge_estado($o['estado']); ?></td>
-                        <td><?php echo $o['fecha_ingreso']; ?></td>
-                        <td><?php echo $o['fecha_estimada']; ?></td>
+                        <td><?php echo  ($o['fecha_ingreso']); ?></td>
+                        <td><?php echo  ($o['fecha_estimada']); ?></td>
                         <td>
                             <a href="modificarorden.php?id=<?php echo $o['id']; ?>" class="btn btn-sm btn-outline-primary me-1">
                                 <i class="bi bi-pencil"></i>
@@ -103,30 +103,30 @@ $ordenes = mostrarOrdenes($conexion, $rol, $id_usuario, $filtro_estado);
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>
-                        <?php } elseif ($rol === 'mecanico' || $rol === 'electricista'){ ?>
-                        <td><?php echo $o['cliente']; ?></td>
-                        <td><?php echo $o['vehiculo']; ?></td>
-                        <td><?php echo substr($o['descripcion'], 0, 50) . (strlen($o['descripcion'])>50?'...':''); ?></td>
+                        <?php elseif ($rol === 'mecanico' || $rol === 'electricista'): ?>
+                        <td><?php echo  ($o['cliente']); ?></td>
+                        <td><?php echo  ($o['vehiculo']); ?></td>
+                        <td><?php echo  (substr($o['descripcion'], 0, 50)) . (strlen($o['descripcion'])>50?'...':''); ?></td>
                         <td><?php echo badge_estado($o['estado']); ?></td>
-                        <td><?php echo $o['fecha_estimada']; ?></td>
+                        <td><?php echo  ($o['fecha_estimada']); ?></td>
                         <td>
                             <a href="modificarorden.php?id=<?php echo $o['id']; ?>" class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-arrow-clockwise me-1"></i>Estado
                             </a>
                         </td>
-                        <?php } else { ?>
-                        <td><?php echo $o['vehiculo']; ?></td>
+                        <?php else: ?>
+                        <td><?php echo  ($o['vehiculo']); ?></td>
                         <td><span class="badge bg-<?php echo $o['tipo']==='mecanica'?'info text-dark':'secondary'; ?>"><?php echo ucfirst($o['tipo']); ?></span></td>
-                        <td><?php echo $o['trabajador']; ?></td>
+                        <td><?php echo  ($o['trabajador']); ?></td>
                         <td><?php echo badge_estado($o['estado']); ?></td>
-                        <td><?php echo $o['fecha_estimada']; ?></td>
+                        <td><?php echo  ($o['fecha_estimada']); ?></td>
                         <td>
                             <?php if ($o['estado'] === 'pendiente'){ ?>
                             <a href="eliminarorden.php?id=<?php echo $o['id']; ?>&cancelar=1" class="btn btn-sm btn-outline-warning"
                                onclick="return confirm('¿Cancelar esta orden?')">
                                 <i class="bi bi-x-circle me-1"></i>Cancelar
                             </a>
-                            <?php } else { ?>
+                            <?php else{ ?>
                             <span class="text-muted small">-</span>
                             <?php }; ?>
                         </td>

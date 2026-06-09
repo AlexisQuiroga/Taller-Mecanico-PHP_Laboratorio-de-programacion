@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 if (isset($_SESSION['id'])) {
     header('Location: dashboard.php');
@@ -57,9 +57,9 @@ if (!empty($_POST['aceptar'])) {
                     <h4 class="fw-bold mt-2 mb-0">TallerMec</h4>
                     <p class="text-muted small">Crear cuenta de cliente</p>
                 </div>
-                <?php if ($error){ ?>
+                <?php if ($error): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo $error; ?>
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo  ($error); ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 <?php }; ?>
@@ -67,17 +67,17 @@ if (!empty($_POST['aceptar'])) {
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" required
-                            value="<?php echo isset($_POST['nombre']) ? $_POST['nombre'] : ''; ?>">
+                            value="<?php echo isset($_POST['nombre']) ?  ($_POST['nombre']) : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="apellido" class="form-label">Apellido</label>
                         <input type="text" class="form-control" id="apellido" name="apellido" required
-                            value="<?php echo isset($_POST['apellido']) ? $_POST['apellido'] : ''; ?>">
+                            value="<?php echo isset($_POST['apellido']) ?  ($_POST['apellido']) : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" required
-                            value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
+                            value="<?php echo isset($_POST['email']) ?  ($_POST['email']) : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'validaciones.php';
 require_once 'consultas.php';
 $conexion = conexion();
@@ -19,7 +19,7 @@ $usuarios = mostrarUsuarios($conexion);
     </div>
     <?php if (isset($_SESSION['mensaje'])){ ?>
     <div class="alert alert-<?php echo $_SESSION['tipo']; ?> alert-dismissible fade show">
-        <?php echo $_SESSION['mensaje']; unset($_SESSION['mensaje'], $_SESSION['tipo']); ?>
+        <?php echo  ($_SESSION['mensaje']); unset($_SESSION['mensaje'], $_SESSION['tipo']); ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     <?php }; ?>
@@ -41,9 +41,9 @@ $usuarios = mostrarUsuarios($conexion);
                     <?php while ($u = mysqli_fetch_array($usuarios)) { ?>
                     <tr>
                         <td><?php echo $u['id']; ?></td>
-                        <td><?php echo $u['nombre']; ?></td>
-                        <td><?php echo $u['apellido']; ?></td>
-                        <td><?php echo $u['email']; ?></td>
+                        <td><?php echo  ($u['nombre']); ?></td>
+                        <td><?php echo  ($u['apellido']); ?></td>
+                        <td><?php echo  ($u['email']); ?></td>
                         <td>
                             <?php
                             $badge_class = ['admin'=>'danger','mecanico'=>'primary','electricista'=>'warning text-dark','cliente'=>'success'];
