@@ -1,0 +1,28 @@
+INTEGRANTES DEL EQUIPO
+----------------------
+Perez, Rodrigo
+Quiroga, Alexis
+
+
+CREDENCIALES DE ACCESO
+----------------------
+
+Administrador
+Email: admin@taller.com
+Contraseña: admin123
+
+Mecánico
+Email: roberto@taller.com
+Contraseña: mec123
+
+Electricista
+Email: rperez@taller.com
+Contraseña: elec123
+
+Cliente
+Email: aquiroga@cliente.com
+Contraseña: cli123
+
+Cliente
+Email: maria@cliente.com
+Contraseña: cli456

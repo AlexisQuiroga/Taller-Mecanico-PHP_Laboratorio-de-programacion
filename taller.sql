@@ -55,4 +55,5 @@ INSERT INTO ordenes_trabajo (id_vehiculo, id_cliente, id_trabajador, tipo, descr
 (1, 4, 2, 'mecanica', 'Cambio de aceite y filtros. Revision de frenos delanteros.', 'pendiente', '2026-05-28', '2026-06-03'),
 (2, 4, 2, 'mecanica', 'Ajuste de suspension y alineacion. Balanceo de ruedas.', 'en_proceso', '2026-05-25', '2026-06-02'),
 (3, 5, 3, 'electricidad', 'Falla en sistema de arranque. Revision de bateria y alternador.', 'pendiente', '2026-05-30', '2026-06-04'),
-(4, 5, 3, 'electricidad', 'Instalacion de alarma y luces LED adicionales.', 'completado', '2026-05-20', '2026-05-27');
+(4, 5, 3, 'electricidad', 'Instalacion de alarma y luces LED adicionales.', 'completado', '2026-05-20', '2026-05-27'),
+(3, 5, 3, 'electricidad', 'Cambio de tablero de instrumentos. Cliente decidio no continuar con el trabajo.', 'cancelado', '2026-05-15', '2026-05-22');
